@@ -1,4 +1,4 @@
-## Video editor "like Snapchat"
+# Video editor "like Snapchat"
 Video editor is a Flutter application that allows you to add stickers to videos and save them to your device.
 
 ## Features:
