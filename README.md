@@ -1,16 +1,17 @@
-# video_editor
+# Video editor "like Snapchat"
+Video editor is a Flutter application that allows you to add stickers to videos and save them to your device.
 
-Video editor using flutter
+## Features:
+- Pick videos from the gallery
+- Add stickers to the videos
+- Drag, rotate, and scale the stickers
+- Save the edited video to the device
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Used packages:
+- "image_picker" for picking videos from the gallery
+- "video_player" for displaying videos
+- "Tapioca" for saving videos with stickers on it
+- "gallery_saver" for saving videos to the gallery
+- "matrix_gesture_detector" for manipulating the stickers (scale, rotate, drag) 
+- "image" to edit the stickers with actual scale and rotation and position before saving it on the video 
+- "path_provider" to get the gallery path or any path I want from device storage

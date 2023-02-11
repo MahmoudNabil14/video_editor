@@ -129,21 +129,23 @@ class _VideoEditorAppState extends State<VideoEditorApp> {
     setState(() {
       isLoading = true;
     });
-    var tempDir = await getTemporaryDirectory();
-    final path = '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}result.mp4';
+    Directory tempDir = await getTemporaryDirectory();
+    final String path = '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}result.mp4';
 
     //To Save sticker with its scaled size
-    final imageBitmap = (await rootBundle.load(selectedSticker)).buffer.asUint8List();
+    final Uint8List imageBitmap = (await rootBundle.load(selectedSticker)).buffer.asUint8List();
     IMG.Image? img = IMG.decodeImage(imageBitmap);
-    IMG.Image resizedSticker = IMG.copyResize(img!, width: 120 * _stickerScale.toInt(), height: 120 * _stickerScale.toInt());
-    IMG.Image rotatedSticker = IMG.copyRotate(resizedSticker, angle: _stickerRotation*90);
-    Uint8List resizedImg = Uint8List.fromList(IMG.encodePng(rotatedSticker));
+    IMG.Image? resizedStickerImg = IMG.copyResize(img!, width: 120 * _stickerScale.toInt(), height: 120 * _stickerScale.toInt());
+    Uint8List resizedStickerBitmap = Uint8List.fromList(IMG.encodePng(resizedStickerImg));
+    IMG.Image? transformedStickerDecoded = IMG.decodeImage(resizedStickerBitmap);
+    IMG.Image transformedStickerImg = IMG.copyRotate(transformedStickerDecoded!, angle: _stickerRotation.toInt()*90);
+    Uint8List transformedSticker = Uint8List.fromList(IMG.encodePng(transformedStickerImg));
 
     //to save the video
     try {
       //to save sticker on the video
       final tapiocaBalls = [
-        TapiocaBall.imageOverlay(resizedImg, stickerPosition.dx.toInt(), stickerPosition.dy.toInt()),
+        TapiocaBall.imageOverlay(transformedSticker, stickerPosition.dx.toInt(), stickerPosition.dy.toInt()),
       ];
       final cup = Cup(Content(_video.path), tapiocaBalls);
       cup.suckUp(path).then((_) async {
@@ -173,6 +175,8 @@ class _VideoEditorAppState extends State<VideoEditorApp> {
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.black,
       key: scaffoldKey,
@@ -265,13 +269,13 @@ class _VideoEditorAppState extends State<VideoEditorApp> {
                                                             _showDeleteButton = false;
                                                           });
                                                         }
-                                                        if (offset.dy > 600) {
+                                                        if (offset.dy > height - (height/4)) {
                                                           stickers.removeAt(0);
                                                         }
                                                         stickerPosition = offset;
                                                       },
                                                       onDragUpdate: (offset) {
-                                                        if (offset.dy > 600) {
+                                                        if (offset.dy > height - (height/4)) {
                                                           if (!_isDeleteButtonActive) {
                                                             setState(() {
                                                               _isDeleteButtonActive = true;
@@ -286,7 +290,6 @@ class _VideoEditorAppState extends State<VideoEditorApp> {
                                                         }
                                                       },
                                                       onScaleUpdate: (ScaleUpdateDetails details) {
-                                                        print(details.rotation);
                                                         if (details.scale > 1 || details.scale < 1) {
                                                           _stickerScale = details.scale;
                                                         }
