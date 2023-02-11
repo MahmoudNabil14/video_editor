@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -10,6 +9,8 @@ import 'package:tapioca/tapioca.dart';
 import 'package:video_editor/sticker.dart';
 import 'package:video_player/video_player.dart';
 import 'package:image/image.dart' as IMG;
+// import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
+
 
 void main() {
   runApp(const MyApp());
