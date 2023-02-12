@@ -14,7 +14,8 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   path_provider: ^2.0.12
-  ffmpeg_kit_flutter: ^5.1.0
+  #ffmpeg_kit_flutter: ^5.1.0
+
   #To pick the video from mobile storage
   image_picker: ^0.8.6+1
   #To play the video

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
+// import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -134,10 +134,10 @@ class _VideoEditorAppState extends State<VideoEditorApp> {
     //To Save sticker with its scaled size
     final Uint8List imageBitmap = (await rootBundle.load(selectedSticker)).buffer.asUint8List();
     IMG.Image? img = IMG.decodeImage(imageBitmap);
-    IMG.Image? resizedStickerImg = IMG.copyResize(img!, width: 120 * _stickerScale.toInt(), height: 120 * _stickerScale.toInt());
+    IMG.Image? resizedStickerImg = IMG.copyResize(img!, width: (120 * _stickerScale).toInt(), height: (120 * _stickerScale).toInt());
     Uint8List resizedStickerBitmap = Uint8List.fromList(IMG.encodePng(resizedStickerImg));
     IMG.Image? transformedStickerDecoded = IMG.decodeImage(resizedStickerBitmap);
-    IMG.Image transformedStickerImg = IMG.copyRotate(transformedStickerDecoded!, angle: _stickerRotation.toInt()*90);
+    IMG.Image transformedStickerImg = IMG.copyRotate(transformedStickerDecoded!, angle: (_stickerRotation*90).toInt());
     Uint8List transformedSticker = Uint8List.fromList(IMG.encodePng(transformedStickerImg));
 
     //to save the video
@@ -289,10 +289,12 @@ class _VideoEditorAppState extends State<VideoEditorApp> {
                                                         }
                                                       },
                                                       onScaleUpdate: (ScaleUpdateDetails details) {
-                                                        if (details.scale > 1 || details.scale < 1) {
+                                                        if (details.scale!=1) {
                                                           _stickerScale = details.scale;
                                                         }
-                                                        _stickerRotation = details.rotation;
+                                                        if (details.rotation != 0) {
+                                                          _stickerRotation = details.rotation;
+                                                        }
                                                       },
                                                     ));
                                                     selectedSticker = stickerPath;
